@@ -30,17 +30,18 @@ class FameloDomainChange {
 		}
 
 		$oldDomain = get_option('famelo_wordpress_uri');
+		$oldPath = get_option('famelo_wordpress_path');
 
 		if ($this->hasDomainChanged() && $this->hasPathChanged()) {
 			$this->updateDomainReferences($oldDomain, $newDomain);
 			update_option('famelo_wordpress_path', $this->getWordpressPath());
 			update_option('famelo_wordpress_uri', $this->getWordpressUri());
-			$this->output($oldDomain, $newDomain);
+			$this->output($oldDomain, $newDomain, $oldPath);
 			exit();
 		}
 	}
 
-	public function output($oldDomain, $newDomain) {
+	public function output($oldDomain, $newDomain, $oldPath) {
 		echo '
 		<link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css" rel="stylesheet">
 		<style>
@@ -73,8 +74,8 @@ class FameloDomainChange {
 			</tr>
 			<tr>
 				<th>Path</th>
+				<td>' . $oldPath . '</td>
 				<td>' . get_option('famelo_wordpress_path') . '</td>
-				<td>' . $this->getWordpressPath() . '</td>
 			</tr>
 			</table>
 		<strong>You can now reload to continue :)</strong>
